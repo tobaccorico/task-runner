@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --fix",
-    "health": "node health-check.js",
+    "health": "node src/health-check.js",
     "localstack:setup": "python3 -m venv .venv && .venv/bin/pip install localstack",
     "localstack:start": ".venv/bin/localstack start && node src/setup-localstack.js",
     "localstack:stop": ".venv/bin/localstack stop"
