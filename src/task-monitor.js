@@ -19,11 +19,11 @@ class TaskMonitor {
     await fs.mkdir(path.dirname(this.logFile), { recursive: true }).catch(() => {})
     
     // Start periodic cleanup of old events (keep last 1000 events)
-    setInterval(() => {
+    this.cleanupInterval = setInterval(() => {
       if (this.events.length > 1000) {
         this.events = this.events.slice(-1000)
       }
-    }, 60000) // Every minute
+    }, 60000)
     
     this.isInitialized = true
     console.log('Task monitor initialized')
@@ -124,6 +124,9 @@ class TaskMonitor {
   async shutdown() {
     // Save final stats before shutdown
     try {
+      if (this.cleanupInterval) {
+        clearInterval(this.cleanupInterval)
+      }
       const statsFile = path.join(__dirname, '../logs/task-stats-final.json')
       await fs.writeFile(statsFile, JSON.stringify(this.getAllTaskStats(), null, 2))
       console.log('Task stats saved to:', statsFile)

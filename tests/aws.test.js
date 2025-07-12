@@ -2,18 +2,23 @@
 const AWS = require('aws-sdk')
 const { loadSecrets, checkAWSHealth } = require('../src/aws')
 
-// Mock AWS SDK for testing
-jest.mock('aws-sdk')
+jest.mock('../src/aws', () => {
+  const originalModule = jest.requireActual('../src/aws');
+  return {
+    ...originalModule,
+    // more mocks to add potentially
+  };
+});
 
 describe('AWS Integration', () => {
   let mockDynamoClient
   
   beforeEach(() => {
     mockDynamoClient = {
-      get: jest.fn(),
-      promise: jest.fn()
+      get: jest.fn().mockReturnValue({
+        promise: jest.fn()
+      })
     }
-    
     AWS.DynamoDB.DocumentClient.mockImplementation(() => mockDynamoClient)
     mockDynamoClient.get.mockReturnValue(mockDynamoClient)
   })
@@ -30,7 +35,7 @@ describe('AWS Integration', () => {
       
       // Re-require the module to trigger LocalStack configuration
       delete require.cache[require.resolve('../src/aws')]
-      require('../aws')
+      require('../src/aws')
       
       expect(AWS.DynamoDB.DocumentClient).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -45,7 +50,7 @@ describe('AWS Integration', () => {
     test('should use default AWS configuration in production', () => {
       process.env.NODE_ENV = 'production'
       
-      delete require.cache[require.resolve('../aws')]
+      delete require.cache[require.resolve('../src/aws')]
       require('../aws')
       
       expect(AWS.DynamoDB.DocumentClient).toHaveBeenCalledWith({})
@@ -84,8 +89,8 @@ describe('AWS Integration', () => {
       resourceNotFoundError.code = 'ResourceNotFoundException'
       mockDynamoClient.promise.mockRejectedValue(resourceNotFoundError)
       
-      delete require.cache[require.resolve('../aws')]
-      const { loadSecrets: localLoadSecrets } = require('../aws')
+      delete require.cache[require.resolve('../src/aws')]
+      const { loadSecrets: localLoadSecrets } = require('../src/aws')
       
       await localLoadSecrets()
       
