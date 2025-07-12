@@ -12,7 +12,9 @@
     "test:watch": "jest --watch",
     "lint": "eslint . --fix",
     "health": "node health-check.js",
-    "setup:localstack": "virtualenv venv && source venv/bin/activate && pip install localstack && node scripts/setup-localstack.js"
+    "localstack:setup": "python3 -m venv .venv && .venv/bin/pip install localstack",
+    "localstack:start": ".venv/bin/localstack start && node setup-localstack.js",
+    "localstack:stop": ".venv/bin/localstack stop"
   },
   "dependencies": {
     "node-cron": "^3.0.2",
