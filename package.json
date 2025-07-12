@@ -1,23 +1,28 @@
+
 {
-  "name": "task-runner",
-  "version": "1.0.0",
-  "private": true,
-  "description": "",
-  "main": "src/app.js",
+  "name": "defillama-task-runner",
+  "version": "1.1.0",
+  "description": "DefiLlama task runner with monitoring and LocalStack support",
+  "main": "app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "localstack:setup": "python3 -m venv .venv && .venv/bin/pip install localstack",
-    "localstack:start": ".venv/bin/localstack start",
-    "localstack:stop": ".venv/bin/localstack stop"
+    "start": "node app.js",
+    "dev": "NODE_ENV=development node app.js",
+    "local": "NODE_ENV=local USE_LOCALSTACK=true node app.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --fix",
+    "health": "node health-check.js",
+    "setup:localstack": "virtualenv venv && source venv/bin/activate && pip install localstack && node scripts/setup-localstack.js"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "@types/node-fetch": "^2.6.4",
-    "aws-sdk": "^2.1439.0",
-    "node-cron": "^3.0.2"
+    "node-cron": "^3.0.2",
+    "aws-sdk": "^2.1439.0"
   },
-  "engines": {
-    "node": "18.x"
-  }
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0"
+  },
+  "keywords": ["defi", "llama", "task-runner", "automation", "DefiLlama", "cron", "monitoring"],
+  "author": "DefiLlama Team",
+  "license": "MIT"
 }
