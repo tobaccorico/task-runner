@@ -3,17 +3,17 @@
   "name": "defillama-task-runner",
   "version": "1.1.0",
   "description": "DefiLlama task runner with monitoring and LocalStack support",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "NODE_ENV=development node app.js",
-    "local": "NODE_ENV=local USE_LOCALSTACK=true node app.js",
+    "start": "node src/app.js",
+    "dev": "NODE_ENV=development node src/app.js",
+    "local": "NODE_ENV=local USE_LOCALSTACK=true node src/app.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --fix",
     "health": "node health-check.js",
     "localstack:setup": "python3 -m venv .venv && .venv/bin/pip install localstack",
-    "localstack:start": ".venv/bin/localstack start && node setup-localstack.js",
+    "localstack:start": ".venv/bin/localstack start && node src/setup-localstack.js",
     "localstack:stop": ".venv/bin/localstack stop"
   },
   "dependencies": {
