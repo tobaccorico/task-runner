@@ -5,7 +5,10 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "localstack:setup": "python3 -m venv .venv && .venv/bin/pip install localstack",
+    "localstack:start": ".venv/bin/localstack start",
+    "localstack:stop": ".venv/bin/localstack stop"
   },
   "author": "",
   "license": "MIT",
